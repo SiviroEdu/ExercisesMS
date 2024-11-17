@@ -31,10 +31,13 @@ async def create_question(
 
 
 @router.get("/random")
-async def get_random(user: Annotated[UserSchema, Depends(get_current_user)]) -> QuestionSchema | None:
+async def get_random(
+        user: Annotated[UserSchema, Depends(get_current_user)],
+        course_id: int = Query()
+) -> QuestionSchema | None:
     questions_done = await QuestionsDone.filter(user_id=user.id).values_list("question_id", flat=True)
 
-    question = await (Question.annotate(order=Random()).filter(id__not_in=questions_done)
+    question = await (Question.annotate(order=Random()).filter(course_id=course_id, id__not_in=questions_done)
                                 .order_by("order").limit(1).first())
 
     if not question:
