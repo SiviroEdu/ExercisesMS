@@ -1,0 +1,6 @@
+tortoise-orm[asyncpg]
+fastapi
+pydantic
+uvicorn
+
+git+https://github.com/HexChap/MSCore#egg=ms_core
